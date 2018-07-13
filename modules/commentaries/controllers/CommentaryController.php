@@ -12,13 +12,20 @@ use app\modules\commentaries\models\Commentary;
  */
 class CommentaryController extends Controller
 {
+    public function behaviors()
+    {
+        return [
+            'app\modules\commentaries\filters\AjaxOnlyAccess'
+        ];
+    }
+
     /**
      * Renders the index view for the module
      * @return string
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        return $this->asJson(Commentary::find()->all());
     }
 
     /**
