@@ -11,7 +11,7 @@ namespace app\modules\commentaries\models;
  * @property string $created_at
  * @property int $position
  */
-class CommentaryModel extends \yii\db\ActiveRecord
+class Commentary extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
