@@ -53,6 +53,8 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'commentary/create' => 'commentaries/commentary/create',
+                'commentary/delete' => 'commentaries/commentary/delete',
             ],
         ],
 
