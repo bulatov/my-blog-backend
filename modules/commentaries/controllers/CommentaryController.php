@@ -5,6 +5,7 @@ namespace app\modules\commentaries\controllers;
 use Yii;
 use yii\web\Controller;
 use yii\base\Module;
+use yii\filters\Cors;
 
 use app\modules\commentaries\models\Commentary;
 
@@ -34,7 +35,18 @@ class CommentaryController extends Controller
     public function behaviors()
     {
         return [
-            'app\modules\commentaries\filters\AjaxOnlyAccess'
+            'corsFilter' => [
+                'class' => Cors::className(),
+                'cors' => [
+                    'Origin'                           => ['http://localhost:3000'],
+                    'Access-Control-Allow-Origin'      => ['http://localhost:3000'],
+                    'Access-Control-Request-Method'    => ['POST', 'GET'],
+                    'Access-Control-Allow-Credentials' => true,
+                    'Access-Control-Max-Age'           => 3600,
+                    'Access-Control-Request-Headers'     => ['X-Requested-With'],
+                ],
+            ],
+            'app\modules\commentaries\filters\AjaxOnlyAccess',
         ];
     }
 

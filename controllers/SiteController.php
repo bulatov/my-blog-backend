@@ -12,6 +12,11 @@ use app\models\ContactForm;
 
 class SiteController extends Controller
 {
+    // public function beforeAction($action) {
+    //     $this->enableCsrfValidation = false;
+    //     return parent::beforeAction($action);
+    // }
+
     /**
      * {@inheritdoc}
      */
@@ -35,6 +40,17 @@ class SiteController extends Controller
                     'logout' => ['post'],
                 ],
             ],
+            'corsFilter' => [
+                'class' => \yii\filters\Cors::className(),
+                'cors' => [
+                    'Origin'                           => ['http://localhost:3000'],
+                    'Access-Control-Allow-Origin'      => ['http://localhost:3000'],
+                    'Access-Control-Request-Method'    => ['POST', 'GET'],
+                    'Access-Control-Allow-Credentials' => true,
+                    'Access-Control-Max-Age'           => 3600,
+                    'Access-Control-Request-Headers'     => ['X-Requested-With'],
+                ],
+            ],
         ];
     }
 
@@ -52,6 +68,10 @@ class SiteController extends Controller
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
+    }
+
+    public function actionCsrfToken() {
+        return $this->asJson(['csrfToken' => Yii::$app->request->getCsrfToken()]);
     }
 
     /**
