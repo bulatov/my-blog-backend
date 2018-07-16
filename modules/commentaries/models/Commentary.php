@@ -2,17 +2,41 @@
 
 namespace app\modules\commentaries\models;
 
+use yii\db\ActiveRecord;
+use yii\behaviors\BlameableBehavior;
+use yii\behaviors\TimestampBehavior;
+
 /**
  * This is the model class for table "commentary".
  *
  * @property int $id
- * @property string $content
  * @property int $user_id
- * @property string $created_at
- * @property int $position
+ * @property int $created_at
+ * @property int $post_id
+ * @property int $parent_id
+ * @property string $content
  */
-class Commentary extends \yii\db\ActiveRecord
+class Commentary extends ActiveRecord
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors() {
+        return [
+            [
+                'class' => BlameableBehavior::className(),
+                'createdByAttribute' => 'user_id',
+                'updatedByAttribute' => false,
+            ],
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at'],
+                ],
+            ],
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -27,9 +51,8 @@ class Commentary extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['content', 'user_id', 'created_at', 'position'], 'required'],
-            [['user_id', 'position'], 'integer'],
-            [['created_at'], 'safe'],
+            [['content', 'post_id'], 'required'],
+            [['post_id', 'parent_id'], 'integer'],
             [['content'], 'string', 'max' => 255],
         ];
     }
@@ -41,10 +64,11 @@ class Commentary extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'content' => 'Content',
             'user_id' => 'User ID',
             'created_at' => 'Created At',
-            'position' => 'Position',
+            'post_id' => 'Post ID',
+            'parent_id' => 'Parent ID',
+            'content' => 'Content',
         ];
     }
 }

@@ -49,7 +49,7 @@ class CommentaryController extends Controller
 
     /**
      * Creates new commentary
-     * get params: content, user_id, created_at, position
+     * get params: post_id, post_id, [parent_id], content
      * @return \yii\web\Response
      * @throws \yii\web\HttpException
      */
