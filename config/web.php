@@ -16,6 +16,9 @@ $config = [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'ZozsZwxNsmD3zuxmlvznsnfkAR_p7hCG',
         ],
+        'response' => [
+            'format' => yii\web\Response::FORMAT_JSON
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
@@ -48,6 +51,8 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'posts' => 'post/viewAll',
+                'post/<id:\d+>' => 'post/view'
             ],
         ],
 

@@ -71,7 +71,7 @@ class SiteController extends Controller
     }
 
     public function actionCsrfToken() {
-        return $this->asJson(['csrfToken' => Yii::$app->request->getCsrfToken()]);
+        return ['csrfToken' => Yii::$app->request->getCsrfToken()];
     }
 
     /**
