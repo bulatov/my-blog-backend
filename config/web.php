@@ -11,11 +11,6 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
-    'modules' => [
-        'commentaries' => [
-            'class' => 'app\modules\commentaries\CommentaryModule',
-        ],
-    ],
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
@@ -53,8 +48,6 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                'commentary/create' => 'commentaries/commentary/create',
-                'commentary/delete' => 'commentaries/commentary/delete',
             ],
         ],
 

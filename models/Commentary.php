@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\commentaries\models;
+namespace app\models;
 
 use yii\db\ActiveRecord;
 use yii\behaviors\BlameableBehavior;

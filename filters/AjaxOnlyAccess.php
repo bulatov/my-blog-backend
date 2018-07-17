@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\commentaries\filters;
+namespace app\filters;
 
 use Yii;
 use yii\base\ActionFilter;

@@ -1,13 +1,13 @@
 <?php
 
-namespace app\modules\commentaries\controllers;
+namespace app\controllers;
 
 use Yii;
 use yii\web\Controller;
 use yii\base\Module;
 use yii\filters\Cors;
 
-use app\modules\commentaries\models\Commentary;
+use app\models\Commentary;
 
 /**
  * Commentary controller for the `commentaries` module
@@ -46,7 +46,7 @@ class CommentaryController extends Controller
                     'Access-Control-Request-Headers'     => ['X-Requested-With'],
                 ],
             ],
-            'app\modules\commentaries\filters\AjaxOnlyAccess',
+            'app\filters\AjaxOnlyAccess',
         ];
     }
 
