@@ -3,22 +3,48 @@
 namespace app\services;
 
 use Yii;
+use yii\web\ServerErrorHttpException;
+
 use app\models\Commentary;
+use app\repositories\CommentaryRepository;
 
 class CommentaryService {
-    private $invalidRequestException;
 
-    public function __construct() {
-        $this->invalidRequestException = new \yii\web\HttpException(400, 'Invalid request');
+    /**
+     * Creates commentary
+     * @param Commentary $model
+     * @return Commentary created commentary
+     * @throws ServerErrorHttpException if the model cannot be saved
+     */
+    public function createCommentary(Commentary $model):Commentary {
+        if ($model->save()) {
+            return $model;
+        }
+
+        throw new ServerErrorHttpException();
     }
 
-    public function createCommentary() {
-        $model = new Commentary();
-
-        if ($model->load(Yii::$app->request->get(), '') && $model->save()) {
+    /**
+     * Edits commentary
+     * @param Commentary $model
+     * @return Commentary edited Commentary
+     * @throws ServerErrorHttpException if the model cannot be saved
+     */
+    public function editCommentary(Commentary $model):Commentary {
+        if ($model->save()) {
             return $model;
-        } else {
-            throw $this->invalidRequestException;
         }
+
+        throw new ServerErrorHttpException();
+    }
+
+    /**
+     * Deletes commentary
+     * @param Commentary $model
+     * @return Commentary deleted commentary
+     */
+    public function deleteCommentary(Commentary $model):Commentary {
+        $model->delete();
+        return $model;
     }
 }
