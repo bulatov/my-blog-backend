@@ -120,6 +120,3 @@ class CommentaryController extends Controller
         throw new BadRequestHttpException('Unable to verify your data submission');
     }
 }
-// TODO: validate actions
-// adding commentary for existing post, and if parent_id is specified - such commentary exists in the same post
-// editing commentary should edit only content properties (ignores parent_id and so on)

@@ -89,8 +89,8 @@ class Commentary extends ActiveRecord
                  */
                 'parent_id',
                 function($attribute, $params) {
-                    $isCommentaryExists = $this->commentaries->isCommentaryExists(['id' => $this->$attribute, 'post_id' => $params['post_id']]);
-                    // TODO something is wrong here 
+                    $isCommentaryExists = $this->commentaries->isCommentaryExists(['id' => $this->$attribute, 'post_id' => $this->post_id]);
+
                     if ($this->$attribute && !$isCommentaryExists) {
                         $this->addError($attribute, "Validation failed on parent_id");
                     }
