@@ -52,7 +52,8 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 'posts' => 'post/viewAll',
-                'post/<id:\d+>' => 'post/view'
+                'post/<id:\d+>' => 'post/view',
+                'post/<id:d+>/<action:(edit|delete)>' => 'post/<action>'
             ],
         ],
 

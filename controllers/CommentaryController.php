@@ -48,16 +48,10 @@ class CommentaryController extends Controller
     {
         return [
             [
-                'class' => '\yii\filters\Cors',
-                'cors' => [
-                    'Origin'                           => ['http://localhost:3000'],
-                    'Access-Control-Request-Method'    => ['POST', 'GET'],
-                    'Access-Control-Allow-Credentials' => true,
-                    'Access-Control-Max-Age'           => 3600,
-                    'Access-Control-Request-Headers'     => ['X-Requested-With'],
-                ],
+                'class' => Cors::className(),
+                'cors' => require __DIR__ . '/../config/cors.config.php'
             ],
-            '\yii\filters\AjaxFilter'
+            AjaxFilter::className()
         ];
     }
 
@@ -84,11 +78,11 @@ class CommentaryController extends Controller
      */
     public function actionEdit($id) {
         try {
-            $model = $this->commentaries->findCommentaryById($id);
+            $model = $this->commentaries->getCommentaryById($id);
             $model = $this->loadModel($model);
             return $this->service->editCommentary($model);
         } catch(\Throwable $e) {
-            Yii:error($e);
+            Yii::error($e);
             throw new ServerErrorHttpException('Cannot edit a commentary');
         }
     }

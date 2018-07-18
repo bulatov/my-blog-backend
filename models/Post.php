@@ -2,30 +2,33 @@
 
 namespace app\models;
 
+use Yii;
 use yii\db\ActiveRecord;
+use yii\db\ActiveQuery;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 
 /**
- * This is the model class for table "commentary".
+ * This is the model class for table "post".
  *
  * @property int $id
  * @property int $user_id
  * @property int $created_at
- * @property int $post_id
- * @property int $parent_id
+ * @property string $title
  * @property string $content
+ *
+ * @property Commentary[] $commentaries
  */
-class Commentary extends ActiveRecord
+class Post extends ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'commentary';
+        return 'post';
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -51,9 +54,17 @@ class Commentary extends ActiveRecord
     public function rules()
     {
         return [
-            [['content', 'post_id'], 'required'],
-            [['post_id', 'parent_id'], 'integer'],
-            [['content'], 'string', 'max' => 255],
+            [['title', 'content'], 'required'],
+            [['title', 'content'], 'string', 'max' => 255],
         ];
+    }
+
+    /**
+     * Returns all commentaries for related post
+     * @return ActiveQuery
+     */
+    public function getCommentaries():ActiveQuery
+    {
+        return $this->hasMany(Commentary::className(), ['post_id' => 'id']);
     }
 }
