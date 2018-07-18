@@ -62,11 +62,13 @@ class CommentaryController extends Controller
      */
     public function actionCreate() {
         try {
-            $model = $this->loadModel(new Commentary());
+            $model = new Commentary(['scenario' => Commentary::SCENARIO_CREATE]);
+            $model = $this->loadModel($model);
             return $this->service->createCommentary($model);
         } catch(\Throwable $e) {
             Yii::error($e);
-            throw new ServerErrorHttpException('Cannot create a commentary');
+            //throw new ServerErrorHttpException('Cannot create a commentary');
+            throw $e;
         }
     }
 
@@ -79,6 +81,7 @@ class CommentaryController extends Controller
     public function actionEdit($id) {
         try {
             $model = $this->commentaries->getCommentaryById($id);
+            $model->scenario = Commentary::SCENARIO_EDIT;
             $model = $this->loadModel($model);
             return $this->service->editCommentary($model);
         } catch(\Throwable $e) {
@@ -117,3 +120,6 @@ class CommentaryController extends Controller
         throw new BadRequestHttpException('Unable to verify your data submission');
     }
 }
+// TODO: validate actions
+// adding commentary for existing post, and if parent_id is specified - such commentary exists in the same post
+// editing commentary should edit only content properties (ignores parent_id and so on)

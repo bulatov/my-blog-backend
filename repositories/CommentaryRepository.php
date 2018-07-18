@@ -21,4 +21,15 @@ class CommentaryRepository {
 
         throw new NotFoundHttpException();
     }
+
+    /**
+     * Returns boolean indicating that Commentary with specified conditions exists
+     * @param array $conditions
+     * @return boolean
+     */
+    public function isCommentaryExists($conditions) {
+        return Commentary::find()
+            ->where($conditions)
+            ->exists();
+    }
 }
