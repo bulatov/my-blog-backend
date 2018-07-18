@@ -67,8 +67,7 @@ class CommentaryController extends Controller
             return $this->service->createCommentary($model);
         } catch(\Throwable $e) {
             Yii::error($e);
-            //throw new ServerErrorHttpException('Cannot create a commentary');
-            throw $e;
+            throw new ServerErrorHttpException('Cannot create a commentary');
         }
     }
 

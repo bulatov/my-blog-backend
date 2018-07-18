@@ -60,6 +60,17 @@ class Post extends ActiveRecord
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function fields()
+    {
+        $fields = parent::fields();
+        $fields[] = 'commentaries';
+
+        return $fields;
+    }
+
+    /**
      * Returns all commentaries for related post
      * @return ActiveQuery
      */
