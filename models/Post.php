@@ -8,6 +8,8 @@ use yii\db\ActiveQuery;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 
+use app\models\User;
+
 /**
  * This is the model class for table "post".
  *
@@ -21,6 +23,8 @@ use yii\behaviors\TimestampBehavior;
  */
 class Post extends ActiveRecord
 {
+    const SCENARIO_WITH_COMMENTARIES = 'withCommentaries';
+
     /**
      * {@inheritdoc}
      */
@@ -65,7 +69,16 @@ class Post extends ActiveRecord
     public function fields()
     {
         $fields = parent::fields();
-        $fields[] = 'commentaries';
+
+        if ($this->scenario === self::SCENARIO_WITH_COMMENTARIES) {
+            $fields[] = 'commentaries';
+        }
+
+        $fields['user_name'] = function () {
+            return User::getUsernameById($this->user_id);
+        };
+
+        unset($fields['user_id']);
 
         return $fields;
     }

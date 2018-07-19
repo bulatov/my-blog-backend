@@ -92,7 +92,9 @@ class PostController extends Controller
      */
     public function actionGetSingle($id) {
         try {
-            return $this->posts->getPostById($id);
+            $post = $this->posts->getPostById($id);
+            $post->scenario = Post::SCENARIO_WITH_COMMENTARIES;
+            return $post;
         } catch(\Throwable $e) {
             Yii::error($e);
             throw new ServerErrorHttpException('Cannot get single post');

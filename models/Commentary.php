@@ -109,4 +109,20 @@ class Commentary extends ActiveRecord
         $scenarios[self::SCENARIO_EDIT] = ['id', 'content'];
         return $scenarios;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function fields()
+    {
+        $fields = parent::fields();
+
+        $fields['user_name'] = function () {
+            return User::getUsernameById($this->user_id);
+        };
+
+        unset($fields['user_id']);
+
+        return $fields;
+    }
 }

@@ -27,6 +27,14 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
         ],
     ];
 
+    /**
+     * Returns username by id
+     * @param integer $id
+     * @return string
+     */
+    public static function getUsernameById($id) {
+        return self::findIdentity($id)->username;
+    }
 
     /**
      * {@inheritdoc}
