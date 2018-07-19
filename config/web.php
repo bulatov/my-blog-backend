@@ -58,6 +58,25 @@ $config = [
         ],
 
     ],
+    'as access' => [
+        'class' => 'app\filters\LoginRequiredFilter',
+        'rules' => [
+            [
+                'allow' => true,
+                'actions' => ['index', 'login', 'logout', 'csrf-token'],
+                'controllers' => ['site'],
+                'roles' => ['?']
+            ],
+            [
+                'allow' => true,
+                'verbs' => ['OPTIONS'],
+            ],
+            [
+                'allow' => true,
+                'roles' => ['@']
+            ]
+        ]
+    ],
     'params' => $params,
 ];
 
