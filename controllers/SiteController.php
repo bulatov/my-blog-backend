@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use Yii;
+use yii\base\Module;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
@@ -12,10 +13,22 @@ use app\models\ContactForm;
 
 class SiteController extends Controller
 {
-    // public function beforeAction($action) {
-    //     $this->enableCsrfValidation = false;
-    //     return parent::beforeAction($action);
-    // }
+    /**
+     * @var array
+     */
+    private $frontendConfig;
+
+    /**
+     * SiteController constructor
+     * @param $id
+     * @param Module $module
+     * @param array $config
+     */
+    public function __construct($id, Module $module, array $config = [])
+    {
+        $this->frontendConfig = require __DIR__ . '/../config/frontend.config.php';
+        parent::__construct($id, $module, $config);
+    }
 
     /**
      * {@inheritdoc}
@@ -42,14 +55,7 @@ class SiteController extends Controller
             ],
             'corsFilter' => [
                 'class' => \yii\filters\Cors::className(),
-                'cors' => [
-                    'Origin'                           => ['http://localhost:3000'],
-                    'Access-Control-Allow-Origin'      => ['http://localhost:3000'],
-                    'Access-Control-Request-Method'    => ['POST', 'GET'],
-                    'Access-Control-Allow-Credentials' => true,
-                    'Access-Control-Max-Age'           => 3600,
-                    'Access-Control-Request-Headers'     => ['X-Requested-With'],
-                ],
+                'cors' => require __DIR__ . '/../config/cors.config.php'
             ],
         ];
     }
@@ -92,18 +98,15 @@ class SiteController extends Controller
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+            return $this->redirect($this->frontendConfig['root']);
         }
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            return $this->redirect($this->frontendConfig['root']);
         }
 
-        $model->password = '';
-        return $this->render('login', [
-            'model' => $model,
-        ]);
+        return $this->redirect($this->frontendConfig['login']);
     }
 
     /**
@@ -115,7 +118,7 @@ class SiteController extends Controller
     {
         Yii::$app->user->logout();
 
-        return $this->goHome();
+        return $this->redirect($this->frontendConfig['login']);
     }
 
     /**

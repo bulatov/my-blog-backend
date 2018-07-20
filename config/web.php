@@ -73,6 +73,8 @@ $config = [
             ],
             [
                 'allow' => true,
+                'actions' => ['index', 'login', 'logout', 'csrf-token', 'get-all', 'get-single', 'create', 'edit', 'delete'],
+                'controllers' => ['site', 'post', 'commentary'],
                 'roles' => ['@']
             ]
         ]
