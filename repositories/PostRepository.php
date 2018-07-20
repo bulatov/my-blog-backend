@@ -27,7 +27,7 @@ class PostRepository {
      * @return Post[]
      */
     public function getAllPosts():array {
-        return Post::find()->all();
+        return Post::find()->with('commentaries')->all();
     }
 
     /**
