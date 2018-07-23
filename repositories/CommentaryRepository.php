@@ -6,7 +6,8 @@ use yii\web\NotFoundHttpException;
 
 use app\models\Commentary;
 
-class CommentaryRepository {
+class CommentaryRepository
+{
 
     /**
      * Returns commentary model by id
@@ -14,7 +15,8 @@ class CommentaryRepository {
      * @return Commentary
      * @throws NotFoundHttpException if the commentary cannot be found
      */
-    public function getCommentaryById($id):Commentary {
+    public function getCommentaryById($id): Commentary
+    {
         if (($model = Commentary::findOne($id)) !== null) {
             return $model;
         }
@@ -27,7 +29,8 @@ class CommentaryRepository {
      * @param array $conditions
      * @return boolean
      */
-    public function isCommentaryExists($conditions) {
+    public function isCommentaryExists($conditions)
+    {
         return Commentary::find()
             ->where($conditions)
             ->exists();

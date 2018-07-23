@@ -13,12 +13,11 @@ use app\models\User;
 /**
  * This is the model class for table "post".
  *
- * @property int $id
- * @property int $user_id
- * @property int $created_at
- * @property string $title
- * @property string $content
- *
+ * @property int          $id
+ * @property int          $user_id
+ * @property int          $created_at
+ * @property string       $title
+ * @property string       $content
  * @property Commentary[] $commentaries
  */
 class Post extends ActiveRecord
@@ -36,7 +35,8 @@ class Post extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             [
                 'class' => BlameableBehavior::className(),
@@ -87,7 +87,7 @@ class Post extends ActiveRecord
      * Returns all commentaries for related post
      * @return ActiveQuery
      */
-    public function getCommentaries():ActiveQuery
+    public function getCommentaries(): ActiveQuery
     {
         return $this->hasMany(Commentary::className(), ['post_id' => 'id']);
     }

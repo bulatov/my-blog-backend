@@ -45,7 +45,8 @@ class Commentary extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             [
                 'class' => BlameableBehavior::className(),
@@ -75,9 +76,12 @@ class Commentary extends ActiveRecord
                  * Validate that Post with id === post_id exists
                  */
                 'post_id',
-                function($attribute, $params) {
+                function ($attribute, $params) {
                     if (!$this->posts->isPostExists(['id' => $this->$attribute])) {
-                        $this->addError($attribute, "Validation failed on post_id");
+                        $this->addError(
+                            $attribute,
+                            "Validation failed on post_id"
+                        );
                     }
                 },
                 'on' => 'create'
@@ -88,11 +92,17 @@ class Commentary extends ActiveRecord
                  * validate that Commentary with id === parent_id exists in Post with id === post_id
                  */
                 'parent_id',
-                function($attribute, $params) {
-                    $isCommentaryExists = $this->commentaries->isCommentaryExists(['id' => $this->$attribute, 'post_id' => $this->post_id]);
+                function ($attribute, $params) {
+                    $isCommentaryExists = $this->commentaries->isCommentaryExists([
+                        'id' => $this->$attribute,
+                        'post_id' => $this->post_id
+                    ]);
 
                     if ($this->$attribute && !$isCommentaryExists) {
-                        $this->addError($attribute, "Validation failed on parent_id");
+                        $this->addError(
+                            $attribute,
+                            "Validation failed on parent_id"
+                        );
                     }
                 },
                 'on' => 'create'
@@ -103,7 +113,8 @@ class Commentary extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function scenarios() {
+    public function scenarios()
+    {
         $scenarios = parent::scenarios();
         $scenarios[self::SCENARIO_CREATE] = ['post_id', 'content', 'parent_id'];
         $scenarios[self::SCENARIO_EDIT] = ['id', 'content'];

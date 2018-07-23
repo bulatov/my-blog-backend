@@ -6,7 +6,8 @@ use yii\web\NotFoundHttpException;
 
 use app\models\Post;
 
-class PostRepository {
+class PostRepository
+{
 
     /**
      * Returns post model by id
@@ -14,7 +15,8 @@ class PostRepository {
      * @return Post
      * @throws NotFoundHttpException if the post cannot be found
      */
-    public function getPostById($id):Post {
+    public function getPostById($id): Post
+    {
         if (($model = Post::findOne($id)) !== null) {
             return $model;
         }
@@ -26,7 +28,8 @@ class PostRepository {
      * Returns all posts
      * @return Post[]
      */
-    public function getAllPosts():array {
+    public function getAllPosts(): array
+    {
         return Post::find()->with('commentaries')->all();
     }
 
@@ -35,7 +38,8 @@ class PostRepository {
      * @param array $conditions
      * @return boolean
      */
-    public function isPostExists($conditions) {
+    public function isPostExists($conditions)
+    {
         return Post::find()
             ->where($conditions)
             ->exists();

@@ -5,7 +5,6 @@ namespace app\controllers;
 use Yii;
 use yii\base\Module;
 use yii\web\Controller;
-use yii\web\Response;
 use yii\web\BadRequestHttpException;
 use yii\web\ServerErrorHttpException;
 use yii\filters\Cors;
@@ -31,14 +30,19 @@ class CommentaryController extends Controller
 
     /**
      * CommentaryController constructor
-     * @param $id
-     * @param Module $module
-     * @param CommentaryService $service
+     * @param                      $id
+     * @param Module               $module
+     * @param CommentaryService    $service
      * @param CommentaryRepository $commentaries
-     * @param array $config
+     * @param array                $config
      */
-    public function __construct($id, Module $module, CommentaryService $service, CommentaryRepository $commentaries, array $config = [])
-    {
+    public function __construct(
+        $id,
+        Module $module,
+        CommentaryService $service,
+        CommentaryRepository $commentaries,
+        array $config = []
+    ) {
         $this->service = $service;
         $this->commentaries = $commentaries;
         parent::__construct($id, $module, $config);
@@ -57,15 +61,17 @@ class CommentaryController extends Controller
 
     /**
      * Creates new commentary
-     * @return Response
+     * @return Commentary
      * @throws ServerErrorHttpException
      */
-    public function actionCreate() {
+    public function actionCreate()
+    {
         try {
-            $model = new Commentary(['scenario' => Commentary::SCENARIO_CREATE]);
+            $model
+                = new Commentary(['scenario' => Commentary::SCENARIO_CREATE]);
             $model = $this->loadModel($model);
             return $this->service->createCommentary($model);
-        } catch(\Throwable $e) {
+        } catch (\Throwable $e) {
             Yii::error($e);
             throw new ServerErrorHttpException('Cannot create a commentary');
         }
@@ -74,16 +80,17 @@ class CommentaryController extends Controller
     /**
      * Edits commentary by id
      * @param integer $id
-     * @return Response
+     * @return Commentary
      * @throws ServerErrorHttpException
      */
-    public function actionEdit($id) {
+    public function actionEdit($id)
+    {
         try {
             $model = $this->commentaries->getCommentaryById($id);
             $model->scenario = Commentary::SCENARIO_EDIT;
             $model = $this->loadModel($model);
             return $this->service->editCommentary($model);
-        } catch(\Throwable $e) {
+        } catch (\Throwable $e) {
             Yii::error($e);
             throw new ServerErrorHttpException('Cannot edit a commentary');
         }
@@ -92,14 +99,15 @@ class CommentaryController extends Controller
     /**
      * Deletes commentary by id
      * @param integer $id
-     * @return Response
+     * @return Commentary
      * @throws ServerErrorHttpException
      */
-    public function actionDelete($id) {
+    public function actionDelete($id)
+    {
         try {
             $model = $this->commentaries->getCommentaryById($id);
             return $this->service->deleteCommentary($model);
-        } catch(\Throwable $e) {
+        } catch (\Throwable $e) {
             Yii::error($e);
             throw new ServerErrorHttpException('Cannot delete a commentary');
         }
@@ -111,7 +119,8 @@ class CommentaryController extends Controller
      * @return Commentary model filled with data
      * @throws BadRequestHttpException if request data cannot be loaded into model
      */
-    private function loadModel(Commentary $model):Commentary {
+    private function loadModel(Commentary $model): Commentary
+    {
         if ($model->load(Yii::$app->request->get(), '')) {
             return $model;
         }

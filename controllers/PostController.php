@@ -5,7 +5,6 @@ namespace app\controllers;
 use Yii;
 use yii\base\Module;
 use yii\web\Controller;
-use yii\web\Response;
 use yii\web\BadRequestHttpException;
 use yii\web\ServerErrorHttpException;
 use yii\filters\Cors;
@@ -31,14 +30,19 @@ class PostController extends Controller
 
     /**
      * PostController constructor
-     * @param $id
-     * @param Module $module
-     * @param PostService $service
+     * @param                $id
+     * @param Module         $module
+     * @param PostService    $service
      * @param PostRepository $posts
-     * @param array $config
+     * @param array          $config
      */
-    public function __construct($id, Module $module, PostService $service, PostRepository $posts, array $config = [])
-    {
+    public function __construct(
+        $id,
+        Module $module,
+        PostService $service,
+        PostRepository $posts,
+        array $config = []
+    ) {
         $this->service = $service;
         $this->posts = $posts;
         parent::__construct($id, $module, $config);
@@ -57,15 +61,16 @@ class PostController extends Controller
 
     /**
      * Creates new post
-     * @return Response
+     * @return Post
      * @throws ServerErrorHttpException
      */
-    public function actionCreate() {
+    public function actionCreate()
+    {
         try {
             $model = new Post();
             $model = $this->loadModel($model);
             return $this->service->createPost($model);
-        } catch(\Throwable $e) {
+        } catch (\Throwable $e) {
             Yii::error($e);
             throw new ServerErrorHttpException('Cannot create a post');
         }
@@ -73,13 +78,14 @@ class PostController extends Controller
 
     /**
      * Gets all posts
-     * @return Response
+     * @return Post[]
      * @throws ServerErrorHttpException
      */
-    public function actionGetAll() {
+    public function actionGetAll()
+    {
         try {
             return ['posts' => $this->posts->getAllPosts()];
-        } catch(\Throwable $e) {
+        } catch (\Throwable $e) {
             Yii::error($e);
             throw new ServerErrorHttpException('Cannot get all posts');
         }
@@ -87,15 +93,17 @@ class PostController extends Controller
 
     /**
      * Gets single post by id
-     * @param Reponse
-     * @return ServerErrorHttpException
+     * @param integer $id
+     * @return Post
+     * @throws ServerErrorHttpException
      */
-    public function actionGetSingle($id) {
+    public function actionGetSingle($id)
+    {
         try {
             $post = $this->posts->getPostById($id);
             $post->scenario = Post::SCENARIO_WITH_COMMENTARIES;
             return $post;
-        } catch(\Throwable $e) {
+        } catch (\Throwable $e) {
             Yii::error($e);
             throw new ServerErrorHttpException('Cannot get single post');
         }
@@ -104,15 +112,16 @@ class PostController extends Controller
     /**
      * Edits post by id
      * @param integer $id
-     * @return Response
+     * @return Post
      * @throws ServerErrorHttpException
      */
-    public function actionEdit($id) {
+    public function actionEdit($id)
+    {
         try {
             $model = $this->posts->getPostById($id);
             $model = $this->loadModel($model);
             return $this->service->editPost($model);
-        } catch(\Throwable $e) {
+        } catch (\Throwable $e) {
             Yii::error($e);
             throw new ServerErrorHttpException('Cannot edit a post');
         }
@@ -121,14 +130,15 @@ class PostController extends Controller
     /**
      * Deletes post by id
      * @param integer $id
-     * @return Response
+     * @return Post
      * @throws ServerErrorHttpException
      */
-    public function actionDelete($id) {
+    public function actionDelete($id)
+    {
         try {
             $model = $this->posts->getPostById($id);
             return $this->service->deletePost($model);
-        } catch(\Throwable $e) {
+        } catch (\Throwable $e) {
             Yii::error($e);
             throw new ServerErrorHttpException('Cannot delete a post');
         }
@@ -140,7 +150,8 @@ class PostController extends Controller
      * @return Post model filled with data
      * @throws BadRequestHttpException if request data cannot be loaded into model
      */
-    private function loadModel(Post $model):Post {
+    private function loadModel(Post $model): Post
+    {
         if ($model->load(Yii::$app->request->get(), '')) {
             return $model;
         }
