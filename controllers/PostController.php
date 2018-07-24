@@ -4,7 +4,6 @@ namespace app\controllers;
 
 use Yii;
 use yii\base\Module;
-use yii\web\Controller;
 use yii\web\BadRequestHttpException;
 use yii\web\ServerErrorHttpException;
 use yii\filters\Cors;
@@ -14,7 +13,7 @@ use app\models\Post;
 use app\services\PostService;
 use app\repositories\PostRepository;
 
-class PostController extends Controller
+class PostController extends BaseController
 {
     /**
      * PostService dependency
@@ -68,7 +67,7 @@ class PostController extends Controller
     {
         try {
             $model = new Post();
-            $model = $this->loadModel($model);
+            $model = $this->loadModel($model, 'get', '');
             return $this->service->createPost($model);
         } catch (\Throwable $e) {
             Yii::error($e);
@@ -119,7 +118,7 @@ class PostController extends Controller
     {
         try {
             $model = $this->posts->getPostById($id);
-            $model = $this->loadModel($model);
+            $model = $this->loadModel($model, 'get', '');
             return $this->service->editPost($model);
         } catch (\Throwable $e) {
             Yii::error($e);
@@ -142,20 +141,5 @@ class PostController extends Controller
             Yii::error($e);
             throw new ServerErrorHttpException('Cannot delete a post');
         }
-    }
-
-    /**
-     * Loads data from request into model
-     * @param Post $model
-     * @return Post model filled with data
-     * @throws BadRequestHttpException if request data cannot be loaded into model
-     */
-    private function loadModel(Post $model): Post
-    {
-        if ($model->load(Yii::$app->request->get(), '')) {
-            return $model;
-        }
-
-        throw new BadRequestHttpException('Unable to verify your data submission');
     }
 }

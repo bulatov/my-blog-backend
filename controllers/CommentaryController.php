@@ -4,7 +4,6 @@ namespace app\controllers;
 
 use Yii;
 use yii\base\Module;
-use yii\web\Controller;
 use yii\web\BadRequestHttpException;
 use yii\web\ServerErrorHttpException;
 use yii\filters\Cors;
@@ -14,7 +13,7 @@ use app\models\Commentary;
 use app\services\CommentaryService;
 use app\repositories\CommentaryRepository;
 
-class CommentaryController extends Controller
+class CommentaryController extends BaseController
 {
     /**
      * CommentaryService dependency
@@ -69,7 +68,7 @@ class CommentaryController extends Controller
         try {
             $model
                 = new Commentary(['scenario' => Commentary::SCENARIO_CREATE]);
-            $model = $this->loadModel($model);
+            $model = $this->loadModel($model, 'get', '');
             return $this->service->createCommentary($model);
         } catch (\Throwable $e) {
             Yii::error($e);
@@ -88,7 +87,7 @@ class CommentaryController extends Controller
         try {
             $model = $this->commentaries->getCommentaryById($id);
             $model->scenario = Commentary::SCENARIO_EDIT;
-            $model = $this->loadModel($model);
+            $model = $this->loadModel($model, 'get', '');
             return $this->service->editCommentary($model);
         } catch (\Throwable $e) {
             Yii::error($e);
@@ -111,20 +110,5 @@ class CommentaryController extends Controller
             Yii::error($e);
             throw new ServerErrorHttpException('Cannot delete a commentary');
         }
-    }
-
-    /**
-     * Loads data from request into model
-     * @param Commentary $model
-     * @return Commentary model filled with data
-     * @throws BadRequestHttpException if request data cannot be loaded into model
-     */
-    private function loadModel(Commentary $model): Commentary
-    {
-        if ($model->load(Yii::$app->request->get(), '')) {
-            return $model;
-        }
-
-        throw new BadRequestHttpException('Unable to verify your data submission');
     }
 }
